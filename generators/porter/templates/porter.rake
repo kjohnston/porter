@@ -4,11 +4,12 @@ namespace :porter do
       root     = RAILS_ROOT
       config   = YAML.load_file(File.join(RAILS_ROOT, 'config', 'porter_config.yml'))
       user     = config['server']['user']
+      domain   = config['server']['domain']
       dbconfig = ActiveRecord::Base.configurations[RAILS_ENV]
       app      = dbconfig['database'].gsub('_dev', '')
     
       puts "Retrieving latest compressed database backup from production server..."
-      system "scp #{user}@#{app}.com:~/#{app}.sql.gz #{root}"
+      system "scp #{user}@#{domain}.com:~/#{app}.sql.gz #{root}"
 
       puts "Decompressing database backup..."
       system "gunzip #{root}/#{app}.sql.gz"
