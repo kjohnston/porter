@@ -1,0 +1,20 @@
+# Config file for porter gem
+
+server:
+  user: deploy
+  domain: <%= domain %>
+  dir: /opt/apps/<%= app %>
+
+assets:
+  model: Attachment
+  column: attachable_type
+  exclusions: 
+  rsync_options: --verbose --progress --stats --recursive --times --compress
+
+# Example:
+#  
+# assets:
+#   model: Attachment
+#   column: attachable_type
+#   exclusions: NULL, Design, Item, Placement
+#   rsync_options: --verbose --progress --stats --recursive --times --compress
