@@ -9,7 +9,7 @@ namespace :porter do
       app      = dbconfig['database'].gsub('_dev', '')
     
       puts "Retrieving latest compressed database backup from production server..."
-      system "scp #{user}@#{domain}.com:~/#{app}.sql.gz #{root}"
+      system "scp #{user}@#{domain}:~/#{app}.sql.gz #{root}"
 
       puts "Decompressing database backup..."
       system "gunzip #{root}/#{app}.sql.gz"
@@ -66,7 +66,7 @@ namespace :porter do
       puts "Synchronizing with production assets..."
       system "rsync #{rsync_list_command}#{rsync_options} #{user}@#{domain}:#{dir}/shared/public/ public"
 
-      system "rm #{root}/rsync_file_list.txt"
+      system "rm #{root}/rsync_file_list.txt" if File.exists?("#{root}/rsync_file_list.txt")
 
       puts "Production asset synchronization complete"
     end
