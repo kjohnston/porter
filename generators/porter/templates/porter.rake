@@ -45,7 +45,7 @@ namespace :porter do
       dir           = config['server']['dir']
       model         = config['assets']['model'].constantize
       column        = config['assets']['column']
-      exclusions    = config['assets']['exclusions'].split(',').map { |i| i.strip }
+      exclusions    = config['assets']['exclusions'].blank? ? '' : config['assets']['exclusions'].split(',').map { |i| i.strip }
       rsync_options = config['assets']['rsync_options']
 
       excluding = exclusions.blank? ? '' : "(excluding: #{config['assets']['exclusions']} files) "
