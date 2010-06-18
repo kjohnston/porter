@@ -7,7 +7,7 @@ The Porter gem is comprised of Capistrano and Rake tasks that make cloning your 
 * A mysqldump command is remotely issued (via Capistrano) to the remote production server, saving the result as a compressed (gz) file
 * The database backup file from the server is retrieved (via scp) and decompressed
 * The development database is dropped, recreated, and restored from the backup
-* Assets stored in the shared/public are rysnc'd down to your local public directory (exclusions are accepted!)
+* Assets stored in shared/public are rysnc'd down to your local public directory (exclusions are accepted!)
 * Separate rake tasks are included for restoring the db and re-syncing the assets without re-dumping the production db
 
 == Dependencies
