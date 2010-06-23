@@ -64,7 +64,7 @@ namespace :porter do
       rsync_list_command = exclusions.blank? ? '' : "--files-from=#{root}/rsync_file_list.txt "
     
       puts "Synchronizing with production assets..."
-      system "rsync #{rsync_list_command}#{rsync_options} #{user}@#{domain}:#{dir}/shared/public/ public"
+      system "rsync #{rsync_list_command}#{rsync_options} --exclude 'plugin_assets' #{user}@#{domain}:#{dir}/shared/public/ public"
 
       system "rm #{root}/rsync_file_list.txt" if File.exists?("#{root}/rsync_file_list.txt")
 
