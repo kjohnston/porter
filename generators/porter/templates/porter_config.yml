@@ -6,15 +6,19 @@ server:
   dir: /opt/apps/<%= app %>
 
 assets:
-  model: Attachment
-  column: attachable_type
-  exclusions: 
+  entire_dirs: public/attachments
+  excludable_dir: 
+  excludable_model: 
+  excludable_column: 
+  excludable_matches: 
   rsync_options: --verbose --progress --stats --recursive --times --compress
 
 # Example:
-#  
+# 
 # assets:
-#   model: Attachment
-#   column: attachable_type
-#   exclusions: NULL, Design, Item, Placement
-#   rsync_options: --verbose --progress --stats --recursive --times --compress
+  # entire_dirs: 
+  # excludable_dir: public/attachments
+  # excludable_model: Attachment
+  # excludable_column: attachable_type
+  # excludable_matches: NULL, Design, Item, Placement
+  # rsync_options: --verbose --progress --stats --recursive --times --compress
