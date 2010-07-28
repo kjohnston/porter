@@ -1,6 +1,6 @@
-DATABASE_YML = YAML::load_file('config/database.yml')
-STAGES = DATABASE_YML.keys - %w(development test) # you don't need data out of these
-CONFIG = YAML::load_file(File.join(RAILS_ROOT, 'config', 'porter_config.yml'))
+CONFIG    = YAML::load_file(File.join(RAILS_ROOT, 'config', 'porter_config.yml'))
+DATABASES = YAML::load_file(File.join(RAILS_ROOT, 'config', 'database.yml'))
+STAGES    = DATABASES.keys - %w(development test) # you don't need data out of these
 
 namespace :porter do
   STAGES.each do |stage|
@@ -54,7 +54,6 @@ namespace :porter do
       end
 
       task :assets => :environment do
-        require 'yaml'
         root           = RAILS_ROOT
         user           = CONFIG[stage].nil? ? CONFIG['server']['user']   : CONFIG[stage]['user']
         domain         = CONFIG[stage].nil? ? CONFIG['server']['domain'] : CONFIG[stage]['domain']
