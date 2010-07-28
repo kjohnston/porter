@@ -30,9 +30,9 @@ assets:
 # Example:
 # 
 # assets:
-  # entire_dirs: 
+  # entire_dirs: public/campaign public/user
   # excludable_dir: public/attachments
   # excludable_model: Attachment
   # excludable_column: attachable_type
-  # excludable_matches: NULL, Design, Item, Placement
+  # excludable_matches: Document Product
   # rsync_options: --verbose --progress --stats --recursive --times --compress

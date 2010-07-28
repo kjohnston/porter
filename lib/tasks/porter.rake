@@ -58,11 +58,11 @@ namespace :porter do
         user           = CONFIG[stage].nil? ? CONFIG['server']['user']   : CONFIG[stage]['user']
         domain         = CONFIG[stage].nil? ? CONFIG['server']['domain'] : CONFIG[stage]['domain']
         dir            = CONFIG[stage].nil? ? CONFIG['server']['dir']    : CONFIG[stage]['dir']
-        entire_dirs    = CONFIG['assets']['entire_dirs'].blank? ? '' : CONFIG['assets']['entire_dirs'].split(',').map { |i| i.strip }
+        entire_dirs    = CONFIG['assets']['entire_dirs'].blank? ? '' : CONFIG['assets']['entire_dirs'].gsub(/,/,'').split(' ').map { |i| i.strip }
         excludable_dir = CONFIG['assets']['excludable_dir']
         model          = CONFIG['assets']['excludable_model'].constantize unless CONFIG['assets']['excludable_model'].blank?
         column         = CONFIG['assets']['excludable_column']
-        exclusions     = CONFIG['assets']['excludable_matches'].blank? ? '' : CONFIG['assets']['excludable_matches'].split(',').map { |i| i.strip }
+        exclusions     = CONFIG['assets']['excludable_matches'].blank? ? '' : CONFIG['assets']['excludable_matches'].gsub(/,/,'').split(' ').map { |i| i.strip }
         rsync_options  = CONFIG['assets']['rsync_options']
       
         if exclusions.blank?
