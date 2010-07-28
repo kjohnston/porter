@@ -5,10 +5,10 @@
 
 Gem::Specification.new do |s|
   s.name = %q{porter}
-  s.version = "0.1.4"
+  s.version = "0.1.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Kenny Johnston"]
+  s.authors = ["Kenny Johnston", "Robert Bousquet"]
   s.date = %q{2010-07-02}
   s.description = %q{Capistrano and Rake tasks for cloning production database and assets to development.}
   s.email = %q{info@appcreations.com}
@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
      "generators/porter/templates/porter_config.yml",
      "lib/porter.rb",
      "lib/porter/recipes/porter.rb",
+     "lib/tasks/porter.rake",
      "porter.gemspec",
      "test/helper.rb"
   ]

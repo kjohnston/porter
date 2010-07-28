@@ -10,8 +10,9 @@ class PorterGenerator < Rails::Generator::Base
   
     record do |m|
       m.template 'porter_config.yml', File.join('config', 'porter_config.yml')
-      m.template 'porter.rake',       File.join('lib', 'tasks', 'porter.rake')
+      m.template 'porter.rb',         File.join('lib', 'tasks', 'porter.rb')
       m.append_to 'config/deploy.rb', "\n\nrequire 'porter'"
+      m.append_to 'Rakefile', "\n\nrequire 'tasks/porter'"
     end        
   end
 

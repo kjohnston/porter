@@ -5,6 +5,20 @@ server:
   domain: <%= domain %>
   dir: /opt/apps/<%= app %>
 
+# If you want to be able to pull from different environments, and the domains,
+# usernames or directories differ, you can delete the catch-all server option 
+# above and enable a config for each environment's details like this:
+#
+# production:
+#   user: deploy
+#   domain: <%= domain %>
+#   dir: /opt/apps/<%= app %>
+#
+# staging:
+#   user: deploy
+#   domain: <%= domain %>
+#   dir: /opt/apps/<%= app %>
+
 assets:
   entire_dirs: public/attachments
   excludable_dir: 
