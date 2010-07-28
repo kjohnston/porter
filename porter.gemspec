@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
      "VERSION",
      "generators/porter/lib/insert_commands.rb",
      "generators/porter/porter_generator.rb",
-     "generators/porter/templates/porter.rake",
+     "generators/porter/templates/porter.rb",
      "generators/porter/templates/porter_config.yml",
      "lib/porter.rb",
      "lib/porter/recipes/porter.rb",
