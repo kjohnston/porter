@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kenny Johnston", "Robert Bousquet"]
-  s.date = %q{2010-07-02}
+  s.date = %q{2010-07-28}
   s.description = %q{Capistrano and Rake tasks for cloning production database and assets to development.}
   s.email = %q{info@appcreations.com}
   s.extra_rdoc_files = [
