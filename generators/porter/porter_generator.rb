@@ -9,10 +9,10 @@ class PorterGenerator < Rails::Generator::Base
     @domain = @app + (@app.include?('.') ? '' : '.com')
   
     record do |m|
-      m.template 'porter_config.yml', File.join('config', 'porter_config.yml')
-      m.template 'porter.rb',         File.join('lib', 'tasks', 'porter.rb')
-      m.append_to 'config/deploy.rb', "\n\nrequire 'porter'"
-      m.append_to 'Rakefile', "\n\nrequire 'tasks/porter'"
+      m.template  'porter_config.yml', File.join('config', 'porter_config.yml')
+      m.template  'porter.rb',         File.join('lib', 'tasks', 'porter.rb')
+      m.append_to 'config/deploy.rb',  "require 'porter'"
+      m.append_to 'Rakefile',          "require 'tasks/porter'"
     end        
   end
 
