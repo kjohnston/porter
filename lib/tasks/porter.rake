@@ -45,7 +45,12 @@ namespace :porter do
 
         puts "Restoring database from backup..."
         mysql_version = `which mysql`.empty? ? 'mysql5' : 'mysql'
-        system "#{mysql_version} -u root #{dest_db['database']} < #{root}/#{src_db['database']}.sql"
+        cmd = [mysql_version]
+        cmd << "-u #{dest_db['username']}"
+        cmd << "-p #{dest_db['password']}" unless dest_db['password'].blank?
+        cmd << dest_db['database']
+        cmd << "< #{root}/#{src_db['database']}.sql"
+        system cmd.join(' ') # Run the mysql import
 
         puts "Removing database backup file..."
         system "rm #{root}/#{src_db['database']}.sql"
