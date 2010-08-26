@@ -47,7 +47,7 @@ namespace :porter do
         mysql_version = `which mysql`.empty? ? 'mysql5' : 'mysql'
         cmd = [mysql_version]
         cmd << "-u #{dest_db['username']}"
-        cmd << "-p #{dest_db['password']}" unless dest_db['password'].blank?
+        cmd << "--password=#{dest_db['password']}" unless dest_db['password'].blank?
         cmd << dest_db['database']
         cmd << "< #{root}/#{src_db['database']}.sql"
         system cmd.join(' ') # Run the mysql import
