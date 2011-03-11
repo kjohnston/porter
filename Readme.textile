@@ -7,19 +7,19 @@ h2. Overview
 * A mysqldump command is remotely issued (via Capistrano) to the remote server (production or staging environment), saving the result as a compressed (gz) file
 * The database backup file from the server is retrieved (via scp) and decompressed
 * The development database is dropped, recreated, and restored from the backup
-* Assets stored in shared/public are rysnc'd down to your local public directory (exclusions are accepted!)
+* Assets stored in directories you define are rysnc'd down to your local application directory
 * Separate rake tasks are included for restoring the db and re-syncing the assets without re-dumping the remote db
 
 h2. Dependencies
 
 * Capistrano (and a config/deploy.rb file)
 * Rake
-* A Rails App
+* A Rails app
 * rsync (locally and remotely)
 
 h2. Installation
 
-* Add config.gem 'porter' to your Gemfile
+* Add gem 'porter' to your Gemfile
 * Run: bundle install
 * Run: rails g porter
 * Add require 'porter' to your config/deploy.rb
