@@ -1,28 +1,25 @@
-CONFIG    = YAML::load_file(File.join(RAILS_ROOT, 'config', 'porter_config.yml'))
-DATABASES = YAML::load_file(File.join(RAILS_ROOT, 'config', 'database.yml'))
+CONFIG    = YAML::load_file(Rails.root.join('config', 'porter_config.yml'))
+DATABASES = YAML::load_file(Rails.root.join('config', 'database.yml'))
 STAGES    = DATABASES.keys - %w(development test) # you don't need data out of these
 
 namespace :porter do
   STAGES.each do |stage|
     namespace stage do
       task :db => :environment do
-        # Optional: You can setup specific username and host 
-        # combos for each stage in porter_config.yml or use
-        # the default 'server' key to apply to all stages
         if CONFIG[stage]
           src_user     = CONFIG[stage]['user']
           src_domain   = CONFIG[stage]['domain']
         else
-          src_user     = CONFIG['server']['user']
-          src_domain   = CONFIG['server']['domain']
+          puts "Please tell config/porter_config.yml about the '#{stage}' server."
+          return
         end
           
         src_db    = ActiveRecord::Base.configurations[stage]
-        dest_db   = ActiveRecord::Base.configurations[RAILS_ENV]
-        dest_root = RAILS_ROOT
+        dest_db   = ActiveRecord::Base.configurations[Rails.env]
+        dest_root = Rails.root
         
         app       = src_db['database'].split('_').first
-        root      = RAILS_ROOT
+        root      = Rails.root
     
         puts "Retrieving latest compressed database backup from #{stage} server..."
         system "scp #{src_user}@#{src_domain}:~/#{src_db['database']}.sql.gz #{root}"
@@ -55,41 +52,23 @@ namespace :porter do
         puts "Removing database backup file..."
         system "rm #{root}/#{src_db['database']}.sql"
 
-        puts "Production data reload complete"
+        puts "Database reload complete"
       end
 
       task :assets => :environment do
-        root           = RAILS_ROOT
-        user           = CONFIG[stage].nil? ? CONFIG['server']['user']   : CONFIG[stage]['user']
-        domain         = CONFIG[stage].nil? ? CONFIG['server']['domain'] : CONFIG[stage]['domain']
-        dir            = CONFIG[stage].nil? ? CONFIG['server']['dir']    : CONFIG[stage]['dir']
-        entire_dirs    = CONFIG['assets']['entire_dirs'].blank? ? '' : CONFIG['assets']['entire_dirs'].gsub(/,/,'').split(' ').map { |i| i.strip }
-        excludable_dir = CONFIG['assets']['excludable_dir']
-        model          = CONFIG['assets']['excludable_model'].constantize unless CONFIG['assets']['excludable_model'].blank?
-        column         = CONFIG['assets']['excludable_column']
-        exclusions     = CONFIG['assets']['excludable_matches'].blank? ? '' : CONFIG['assets']['excludable_matches'].gsub(/,/,'').split(' ').map { |i| i.strip }
-        rsync_options  = CONFIG['assets']['rsync_options']
+        root           = Rails.root
+        user           = CONFIG[stage]['user']
+        domain         = CONFIG[stage]['domain']
+        app_dir        = CONFIG[stage]['app_dir']
+        asset_dirs     = CONFIG[stage]['asset_dirs'].blank? ? '' : CONFIG[stage]['asset_dirs'].gsub(/,/,'').split(' ').map { |i| i.strip }
+        rsync_options  = CONFIG[stage]['rsync_options']
       
-        if exclusions.blank?
-          entire_dirs << excludable_dir unless excludable_dir.blank?
-        else
-          puts "Building a list of excludable assets (excluding: #{exclusions.join(', ')}) to rsync down..."
-          rsync_file_list = File.new('rsync_file_list.txt', "w")
-          attachments = model.find(:all, :conditions => ["#{column} NOT IN (?)", exclusions])
-          attachments.each do |a|
-            rsync_file_list.send((a == attachments.last ? :print : :puts), a.partitioned_path.join('/'))
-          end
-          rsync_file_list.close
-          system "rsync --files-from=#{root}/rsync_file_list.txt #{rsync_options} #{user}@#{domain}:#{dir}/shared/#{excludable_dir}/ #{excludable_dir}"
-          system "rm #{root}/rsync_file_list.txt" if File.exists?("#{root}/rsync_file_list.txt")
-        end
-      
-        entire_dirs.each do |d|
+        asset_dirs.each do |d|
           puts "Synchronizing assets in #{d}..."
-          system "rsync #{rsync_options} #{user}@#{domain}:#{dir}/shared/#{d}/ #{d}"
+          system "rsync #{rsync_options} #{user}@#{domain}:#{app_dir}/shared/#{d}/ #{d}"
         end
 
-        puts "Production asset synchronization complete"
+        puts "Asset synchronization complete"
       end
     end
   end
