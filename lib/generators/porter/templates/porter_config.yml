@@ -3,14 +3,14 @@
 production:
   user: deploy
   domain: <%= domain %>
-  app_dir: /opt/apps/<%= app %>
-  asset_dirs: system
+  app_dir: /opt/apps/<%= app %>/current
+  asset_dirs: public/system
   rsync_options: --verbose --progress --stats --recursive --times --compress --delete
 
 # staging:
 #   user: deploy
 #   domain: <%= domain %>
-#   dir: /opt/apps/<%= app %>
-#   asset_dirs: system
+#   dir: /opt/apps/<%= app %>/current
+#   asset_dirs: public/system
 #   rsync_options: --verbose --progress --stats --recursive --times --compress --delete
 

@@ -65,7 +65,7 @@ namespace :porter do
       
         asset_dirs.each do |d|
           puts "Synchronizing assets in #{d}..."
-          system "rsync #{rsync_options} #{user}@#{domain}:#{app_dir}/shared/#{d}/ #{d}"
+          system "rsync #{rsync_options} #{user}@#{domain}:#{app_dir}/#{d}/ #{d}"
         end
 
         puts "Asset synchronization complete"
