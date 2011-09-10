@@ -1,4 +1,4 @@
-require "#{File.dirname(__FILE__)}/porter/recipes/porter"
+require File.join(File.dirname(__FILE__), "porter", "capistrano")
 
 module Porter
   require 'porter/railtie'
