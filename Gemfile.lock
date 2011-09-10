@@ -1,0 +1,14 @@
+PATH
+  remote: .
+  specs:
+    porter (1.0.2)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  porter!

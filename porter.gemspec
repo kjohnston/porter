@@ -12,7 +12,8 @@ Gem::Specification.new do |s|
   s.summary     = %q{Capistrano and Rake tasks for cloning production and/or staging databases and assets to development.}
   s.description = %q{Capistrano and Rake tasks for cloning production and/or staging databases and assets to development.}
 
-  s.rubyforge_project = "porter"
+  s.add_runtime_dependency "capistrano", ">= 2.0"
+  s.add_runtime_dependency "rake",       ">= 0.8.7"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
