@@ -50,21 +50,21 @@ namespace :porter do
         puts "Database reload complete"
       end
 
-      # task :assets => :environment do
-      #   root           = Rails.root
-      #   user           = config[stage]['user']
-      #   domain         = config[stage]['domain']
-      #   app_dir        = config[stage]['app_dir']
-      #   asset_dirs     = config[stage]['asset_dirs'].blank? ? '' : config[stage]['asset_dirs'].gsub(/,/,'').split(' ').map { |i| i.strip }
-      #   rsync_options  = config[stage]['rsync_options']
-      #
-      #   asset_dirs.each do |d|
-      #     puts "Synchronizing assets in #{d}..."
-      #     system "rsync #{rsync_options} #{user}@#{domain}:#{app_dir}/#{d}/ #{d}"
-      #   end
-      #
-      #   puts "Asset synchronization complete"
-      # end
+      task :assets => :environment do
+        root           = Rails.root
+        user           = config[stage]['user']
+        domain         = config[stage]['domain']
+        app_dir        = config[stage]['app_dir']
+        asset_dirs     = config[stage]['asset_dirs'].blank? ? '' : config[stage]['asset_dirs'].gsub(/,/,'').split(' ').map { |i| i.strip }
+        rsync_options  = config[stage]['rsync_options']
+
+        asset_dirs.each do |d|
+          puts "Synchronizing assets in #{d}..."
+          system "rsync #{rsync_options} #{user}@#{domain}:#{app_dir}/#{d}/ #{d}"
+        end
+
+        puts "Asset synchronization complete"
+      end
     end
   end
 end
