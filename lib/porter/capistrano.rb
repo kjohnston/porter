@@ -5,7 +5,7 @@ define_porter_tasks = Proc.new do
     stage  = ARGV[0]
 
     task :db do
-      set :user, ENV["USER"]
+      set :user, ENV["AS"] || ENV["USER"]
 
       s = ""
       run "cat #{config[stage]["app_dir"]}/config/database.yml" do |channel, stream, data|

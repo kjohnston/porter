@@ -7,7 +7,7 @@ namespace :porter do
     namespace stage do
       task :db => :environment do
         src_db     = ActiveRecord::Base.configurations[Rails.env]["database"].split("_").first+"_"+stage
-        src_user   = ENV["USER"]
+        src_user   = ENV["AS"] || ENV["USER"]
 
         src_domain = config[stage]["domain"]
 
@@ -52,7 +52,7 @@ namespace :porter do
 
       task :assets => :environment do
         root           = Rails.root
-        user           = ENV["USER"]
+        user           = ENV["AS"] || ENV["USER"]
         domain         = config[stage]['domain']
         app_dir        = config[stage]['app_dir']
         asset_dirs     = config[stage]['asset_dirs'].blank? ? '' : config[stage]['asset_dirs'].gsub(/,/,'').split(' ').map { |i| i.strip }
