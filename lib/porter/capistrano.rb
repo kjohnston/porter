@@ -23,11 +23,10 @@ if instance = Capistrano::Configuration.instance
         puts "Creating compressed backup of #{database} database on #{domain}..."
         run "mysqldump --user=#{username} --password=#{password} #{database} | gzip > ~/#{database}.sql.gz"
 
-        system "rake porter:db DOMAIN=#{domain} DATABASE=#{database}"
+        system "rake porter:db DOMAIN=#{domain} DATABASE=#{database} --trace"
       end
 
       task :assets do
-        set :user, ENV["AS"] || ENV["USER"]
         system "rake porter:assets STAGE=#{stage.to_s} DOMAIN=#{domain} APP_DIR=#{deploy_to}"
       end
 
