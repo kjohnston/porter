@@ -2,6 +2,6 @@
 
 Add the following to the top of your config/deploy.rb:
 
-require 'porter'
+require "porter/capistrano"
 
 *******************************************************
