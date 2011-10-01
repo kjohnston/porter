@@ -1,25 +1,21 @@
 define_porter_tasks = Proc.new do
 
   namespace :porter do
-    config = YAML::load_file("config/porter_config.yml")
-    stage  = ARGV[0]
 
     task :db do
       set :user, ENV["AS"] || ENV["USER"]
 
-      s = ""
-      run "cat #{config[stage]["app_dir"]}/config/database.yml" do |channel, stream, data|
-        s << data
+      database_yml = ""
+      run "cat #{deploy_to}/current/config/database.yml" do |channel, stream, data|
+        database_yml << data
       end
 
-      c      = YAML::load(s)[stage]
-      db     = c["database"]
-      user   = c["username"]
-      pass   = c["password"]
-      domain = config[stage]["domain"]
-      server domain, :porter
+      config   = YAML::load(database_yml)[stage.to_s]
+      database = config["database"]
+      username = config["username"]
+      password = config["password"]
 
-      run "mysqldump --user=#{user} --password=#{pass} #{db} | gzip > ~/#{db}.sql.gz", :roles => :porter
+      run "mysqldump --user=#{username} --password=#{password} #{database} | gzip > ~/#{database}.sql.gz"
       system "rake porter:#{stage}:db"
     end
 
