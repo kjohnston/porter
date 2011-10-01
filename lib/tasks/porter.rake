@@ -52,12 +52,14 @@ namespace :porter do
     stage         = ENV["STAGE"]
     domain        = ENV["DOMAIN"]
     user          = ENV["AS"] || ENV["USER"]
-    app_dir       = ENV["APP_DIR"]
+    app_dir       = ENV["APP_DIR"]+"/current"
     config        = YAML::load_file(Rails.root.join("config", "porter_config.yml"))
     rsync_options = config[stage]["rsync_options"]
 
     unless config[stage]["asset_dirs"].blank?
       asset_dirs = config[stage]["asset_dirs"].gsub(/,/,' ').split(' ').map { |i| i.strip }
+
+      puts "Connecting to #{domain} as #{user}..."
 
       asset_dirs.each do |d|
         puts "Synchronizing assets in #{d}..."
