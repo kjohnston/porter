@@ -1,70 +1,71 @@
-config = YAML::load_file(Rails.root.join('config', 'porter_config.yml'))
-stages = config.keys
-stage  = ARGV[0]
-
 namespace :porter do
-  stages.each do |stage|
-    namespace stage do
-      task :db => :environment do
-        src_db     = ActiveRecord::Base.configurations[Rails.env]["database"].split("_").first+"_"+stage
-        src_user   = ENV["AS"] || ENV["USER"]
 
-        src_domain = config[stage]["domain"]
+  task :db => :environment do
+    domain          = ENV["DOMAIN"]
+    user            = ENV["AS"] || ENV["USER"]
+    source_database = ENV["DATABASE"]
 
-        dest_db    = ActiveRecord::Base.configurations[Rails.env]
-        dest_root  = Rails.root
-        app        = src_db.split('_').first
-        root       = Rails.root
+    destintation_database_config   = ActiveRecord::Base.configurations[Rails.env]
+    destintation_database          = destintation_database_config["database"]
+    destintation_database_username = destintation_database_config["username"]
+    destintation_database_password = destintation_database_config["password"]
 
-        puts "Retrieving latest compressed database backup from #{stage} server..."
-        system "scp #{src_user}@#{src_domain}:~/#{src_db}.sql.gz #{root}"
+    root = Rails.root
 
-        puts "Decompressing database backup..."
-        system "gunzip #{root}/#{src_db}.sql.gz"
+    puts "Connecting to #{domain} as #{user}..."
 
-        # Drop the database if it exists
-        begin
-          ActiveRecord::Base.establish_connection(dest_db)
-          ActiveRecord::Base.connection # Should raise Mysql::Error if db doesn't exist
-          puts "Dropping database: " + dest_db['database']
-          Rake::Task['db:drop'].execute
-        rescue Mysql2::Error => e
-          raise e unless e.message =~ /Unknown database/
-        end
+    puts "Retrieving database backup from #{domain}..."
+    system "scp #{user}@#{domain}:~/#{source_database}.sql.gz #{root}"
 
-        puts "Creating database: " + dest_db['database']
-        Rake::Task['db:create'].execute
+    puts "Decompressing database backup..."
+    system "gunzip #{root}/#{source_database}.sql.gz"
 
-        puts "Restoring database from backup..."
-        mysql_version = `which mysql`.empty? ? 'mysql5' : 'mysql'
-        cmd = [mysql_version]
-        cmd << "-u #{dest_db['username']}"
-        cmd << "--password=#{dest_db['password']}" unless dest_db['password'].blank?
-        cmd << dest_db['database']
-        cmd << "< #{root}/#{src_db}.sql"
-        system cmd.join(' ') # Run the mysql import
+    # Drop the database if it exists
+    begin
+      ActiveRecord::Base.establish_connection(destintation_database_config)
+      ActiveRecord::Base.connection # Should raise Mysql::Error if db doesn't exist
+      puts "Dropping database: " + destintation_database
+      Rake::Task["db:drop"].execute
+    rescue Mysql2::Error => e
+      raise e unless e.message =~ /Unknown database/
+    end
 
-        puts "Removing database backup file..."
-        system "rm #{root}/#{src_db}.sql"
+    puts "Creating database: " + destintation_database
+    Rake::Task["db:create"].execute
 
-        puts "Database reload complete"
-      end
+    puts "Restoring database from backup..."
+    mysql_version = `which mysql`.empty? ? "mysql5" : "mysql"
+    cmd = [mysql_version]
+    cmd << "-u #{destintation_database_username}"
+    cmd << "--password=#{destintation_database_password}" unless destintation_database_password.blank?
+    cmd << destintation_database
+    cmd << "< #{root}/#{source_database}.sql"
+    system cmd.join(' ') # Run the mysql import
 
-      task :assets => :environment do
-        root           = Rails.root
-        user           = ENV["AS"] || ENV["USER"]
-        domain         = config[stage]['domain']
-        app_dir        = config[stage]['app_dir']
-        asset_dirs     = config[stage]['asset_dirs'].blank? ? '' : config[stage]['asset_dirs'].gsub(/,/,'').split(' ').map { |i| i.strip }
-        rsync_options  = config[stage]['rsync_options']
+    puts "Removing database backup file..."
+    system "rm #{root}/#{source_database}.sql"
 
-        asset_dirs.each do |d|
-          puts "Synchronizing assets in #{d}..."
-          system "rsync #{rsync_options} #{user}@#{domain}:#{app_dir}/#{d}/ #{d}"
-        end
+    puts "Database reload complete"
+  end
 
-        puts "Asset synchronization complete"
+  task :assets => :environment do
+    stage         = ENV["STAGE"]
+    domain        = ENV["DOMAIN"]
+    user          = ENV["AS"] || ENV["USER"]
+    app_dir       = ENV["APP_DIR"]
+    config        = YAML::load_file(Rails.root.join("config", "porter_config.yml"))
+    rsync_options = config[stage]["rsync_options"]
+
+    unless config[stage]["asset_dirs"].blank?
+      asset_dirs = config[stage]["asset_dirs"].gsub(/,/,' ').split(' ').map { |i| i.strip }
+
+      asset_dirs.each do |d|
+        puts "Synchronizing assets in #{d}..."
+        system "rsync #{rsync_options} #{user}@#{domain}:#{app_dir}/#{d}/ #{d}"
       end
     end
+
+    puts "Asset synchronization complete"
   end
+
 end
