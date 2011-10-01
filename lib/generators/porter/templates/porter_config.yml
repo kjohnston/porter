@@ -1,14 +1,9 @@
 # Config file for porter gem
 
 production:
-  domain: <%= domain %>
-  app_dir: /opt/apps/<%= app %>/current
   asset_dirs: public/system
   rsync_options: --verbose --progress --stats --recursive --times --compress --delete
 
 # staging:
-#   domain: <%= domain %>
-#   dir: /opt/apps/<%= app %>/current
 #   asset_dirs: public/system
 #   rsync_options: --verbose --progress --stats --recursive --times --compress --delete
-
