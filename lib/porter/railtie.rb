@@ -1,5 +1,6 @@
-require 'porter'
-require 'rails'
+require "porter"
+require "rails"
+
 module Porter
   class Railtie < Rails::Railtie
     railtie_name :porter
