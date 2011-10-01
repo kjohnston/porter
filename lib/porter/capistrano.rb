@@ -1,33 +1,37 @@
-define_porter_tasks = Proc.new do
+require "capistrano"
 
-  namespace :porter do
+if instance = Capistrano::Configuration.instance
+  instance.load do
 
-    task :db do
-      set :user, ENV["AS"] || ENV["USER"]
+    namespace :porter do
 
-      database_yml = ""
-      run "cat #{deploy_to}/current/config/database.yml" do |channel, stream, data|
-        database_yml << data
+      task :db do
+        set :user, ENV["AS"] || ENV["USER"]
+        puts "Connecting to #{domain} as #{user}..."
+
+        puts "Reading database.yml on #{domain}..."
+        database_yml = ""
+        run "cat #{deploy_to}/current/config/database.yml" do |channel, stream, data|
+          database_yml << data
+        end
+
+        config   = YAML::load(database_yml)[stage.to_s]
+        database = config["database"]
+        username = config["username"]
+        password = config["password"]
+
+        puts "Creating compressed backup of #{database} database on #{domain}..."
+        run "mysqldump --user=#{username} --password=#{password} #{database} | gzip > ~/#{database}.sql.gz"
+
+        system "rake porter:db DOMAIN=#{domain} DATABASE=#{database}"
       end
 
-      config   = YAML::load(database_yml)[stage.to_s]
-      database = config["database"]
-      username = config["username"]
-      password = config["password"]
+      task :assets do
+        set :user, ENV["AS"] || ENV["USER"]
+        system "rake porter:assets STAGE=#{stage.to_s} DOMAIN=#{domain} APP_DIR=#{deploy_to}"
+      end
 
-      run "mysqldump --user=#{username} --password=#{password} #{database} | gzip > ~/#{database}.sql.gz"
-      system "rake porter:#{stage}:db"
     end
 
   end
-
-end
-
-require "capistrano"
-instance = Capistrano::Configuration.instance
-
-if instance
-  instance.load &define_porter_tasks
-else
-  define_porter_tasks.call
 end
