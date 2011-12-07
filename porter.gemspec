@@ -12,8 +12,9 @@ Gem::Specification.new do |s|
   s.summary     = %q{Capistrano and Rake tasks for cloning production and/or staging databases and assets to development.}
   s.description = %q{Capistrano and Rake tasks for cloning production and/or staging databases and assets to development.}
 
-  s.add_runtime_dependency "capistrano", ">= 2.0"
-  s.add_runtime_dependency "rake",       ">= 0.8.7"
+  s.add_runtime_dependency "capistrano",     ">= 2.5.0"
+  s.add_runtime_dependency "capistrano-ext", ">= 1.2.0"
+  s.add_runtime_dependency "rake",           ">= 0.8.7"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
