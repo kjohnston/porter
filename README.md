@@ -28,7 +28,7 @@ More on the Capistrano Multistage Extension:
 
 ### Purge your local database and reload data from a remote server's MySQL dump
 
-  $  bundle exec cap production porter:db
+    $  bundle exec cap production porter:db
 
 This will do the following:
 
@@ -38,7 +38,7 @@ This will do the following:
 
 ### Synchronize a remote server's filesystem-stored assets to your local filesystem
 
-  $  bundle exec cap production porter:assets
+    $  bundle exec cap production porter:assets
 
 This will do the following:
 
