@@ -10,20 +10,19 @@ if instance = Capistrano::Configuration.instance
         puts "Connecting to #{domain} as #{user}..."
 
         puts "Reading database.yml on #{domain}..."
-        database_yml = ""
+        db_yml = ""
         run "cat #{deploy_to}/current/config/database.yml" do |channel, stream, data|
-          database_yml << data
+          db_yml << data
         end
+        db_config   = YAML::load(db_yml)[stage.to_s]
+        db_name     = db_config["database"]
+        db_username = db_config["username"]
+        db_password = db_config["password"]
 
-        config   = YAML::load(database_yml)[stage.to_s]
-        database = config["database"]
-        username = config["username"]
-        password = config["password"]
+        puts "Creating compressed backup of #{db_name} database on #{domain}..."
+        run "mysqldump --user=#{db_username} --password=#{db_password} #{db_name} | gzip > ~/#{db_name}.sql.gz"
 
-        puts "Creating compressed backup of #{database} database on #{domain}..."
-        run "mysqldump --user=#{username} --password=#{password} #{database} | gzip > ~/#{database}.sql.gz"
-
-        system "rake porter:db DOMAIN=#{domain} DATABASE=#{database} --trace"
+        system "rake porter:db DOMAIN=#{domain} DATABASE=#{db_name}"
       end
 
       task :assets do
