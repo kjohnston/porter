@@ -18,7 +18,7 @@ More on the Capistrano Multistage Extension:
 
 ## Installation
 
-* Add gem "porter", "~> 1.1.0" to your Gemfile
+* Add gem "porter", "~> 1.2.0" to your Gemfile
 * Run: bundle install
 * Run: rails g porter
 * Add require "porter/capistrano" to your config/deploy.rb
@@ -34,7 +34,17 @@ This will do the following:
 
 * A mysqldump command will be remotely issued (via Capistrano) to the remote server, saving the result as a compressed (gz) file
 * The database backup file from the server will be retrieved (via scp) and decompressed
-* The database for the environment you are running the task in will be dropped, recreated, and restored from the backup
+* The database for the environment you are running the task in will be dropped, recreated, the schema will be reloaded from schema.rb and the mysqldump will be restored
+
+Note: Since the schema is reloaded once the database is recreated, but before the backup is restored, you should end up with tables that match the remote stage, except for the tables you configure to ignore during the backup - which will be provisioned from your local schema.rb's definition.
+
+#### Optionally omit specific tables from the MySQL dump
+
+Using the ignore_tables attribute in the porter_config.yml file, you can specify any number of tables to ignore in the mysqldump that is executed on the remote server.  This setting is available for each stage (server) you define in the config file.  Table names should be separated by spaces.
+
+You can override the ignore_tables setting as needed when executing the porter:db task with an environment variable:
+
+    $  bundle exec cap production porter:db IGNORE_TABLES="delayed_jobs versions"
 
 ### Synchronize a remote server's filesystem-stored assets to your local filesystem
 
