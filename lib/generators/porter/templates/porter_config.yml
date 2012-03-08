@@ -1,9 +1,11 @@
 # Config file for porter gem
 
 production:
+  ignore_tables:
   asset_dirs: public/system
   rsync_options: --verbose --progress --stats --recursive --times --compress --delete
 
-# staging:
-#   asset_dirs: public/system
-#   rsync_options: --verbose --progress --stats --recursive --times --compress --delete
+staging:
+  ignore_tables:
+  asset_dirs: public/system
+  rsync_options: --verbose --progress --stats --recursive --times --compress --delete
