@@ -33,8 +33,9 @@ namespace :porter do
     puts "Creating database: " + destintation_database
     Rake::Task["db:create"].execute
 
-    puts "Loading schema from schema.rb..."
+    puts "Loading schema..."
     Rake::Task["db:schema:load"].execute
+    rm "#{root}/porter_schema.rb"
 
     puts "Restoring database from backup..."
     mysql_version = `which mysql`.empty? ? "mysql5" : "mysql"

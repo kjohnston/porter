@@ -34,9 +34,9 @@ This will do the following:
 
 * A mysqldump command will be remotely issued (via Capistrano) to the remote server, saving the result as a compressed (gz) file
 * The database backup file from the server will be retrieved (via scp) and decompressed
-* The database for the environment you are running the task in will be dropped, recreated, the schema will be reloaded from schema.rb and the mysqldump will be restored
+* The database for the environment you are running the task in will be dropped, recreated, the schema will be reloaded from the stage's schema.rb and the mysqldump will be restored
 
-Note: Since the schema is reloaded once the database is recreated, but before the backup is restored, you should end up with tables that match the remote stage, except for the tables you configure to ignore during the backup - which will be provisioned from your local schema.rb's definition.
+Note: Since the schema is reloaded once the database is recreated, but before the backup is restored, you should end up with tables that match the remote stage minus the data form the ignored tables.
 
 #### Optionally omit specific tables from the MySQL dump
 

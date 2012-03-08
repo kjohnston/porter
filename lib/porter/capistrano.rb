@@ -20,6 +20,16 @@ if instance = Capistrano::Configuration.instance
         db_password    = db_config["password"]
         db_credentials = "--user=#{db_username} --password=#{db_password} "
 
+        puts "Reading schema.rb on #{domain}..."
+        schema_rb = ""
+        run "cat #{deploy_to}/current/db/schema.rb" do |channel, stream, data|
+          schema_rb << data
+        end
+        schema_file = "porter_schema.rb"
+        File.open(schema_file, "w") do |f|
+          f.puts schema_rb
+        end
+
         porter_config = YAML::load_file("config/porter_config.yml")
 
         if ENV["IGNORE_TABLES"]
@@ -34,7 +44,7 @@ if instance = Capistrano::Configuration.instance
         run "mysqldump #{db_credentials} #{db_name} #{ignore_tables} | gzip > ~/#{db_name}.sql.gz"
 
         # Issue rake task to restore the database backup
-        system "rake porter:db DOMAIN=#{domain} DATABASE=#{db_name}"
+        system "rake porter:db DOMAIN=#{domain} DATABASE=#{db_name} SCHEMA=#{schema_file}"
       end
 
       task :assets do
