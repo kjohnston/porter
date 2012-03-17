@@ -1,6 +1,6 @@
-# Porter Gem
+# Porter
 
-The Porter gem is comprised of Capistrano and Rake tasks that make cloning remote server data down to your local Rails application environment a cinch.
+The Porter Ruby gem is comprised of Capistrano and Rake tasks that make cloning remote server data down to your local Rails application environment a cinch.
 
 ## Dependencies
 
@@ -18,7 +18,7 @@ More on the Capistrano Multistage Extension:
 
 ## Installation
 
-* Add gem "porter", "~> 1.2.0" to your Gemfile
+* Add gem "porter", "~> 1.2.1" to your Gemfile
 * Run: bundle install
 * Run: rails g porter
 * Add require "porter/capistrano" to your config/deploy.rb
@@ -56,24 +56,5 @@ This will do the following:
 
 ## License
 
-The MIT License
-
-Copyright (c) 2010-2012 Kenny Johnston
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+* Freely distributable and licensed under the [MIT license](http://kjohnston.mit-license.org/license.html).
+* Copyright (c) 2010-2012 Kenny Johnston [![endorse](http://api.coderwall.com/kjohnston/endorsecount.png)](http://coderwall.com/kjohnston)
