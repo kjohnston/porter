@@ -18,7 +18,7 @@ More on the Capistrano Multistage Extension:
 
 ## Installation
 
-* Add gem "porter", "~> 1.2.1" to your Gemfile
+* Add gem "porter", "~> 1.2.2" to your Gemfile
 * Run: bundle install
 * Run: rails g porter
 * Add require "porter/capistrano" to your config/deploy.rb

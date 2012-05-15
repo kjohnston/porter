@@ -20,7 +20,7 @@ if instance = Capistrano::Configuration.instance
         db_password     = db_config["password"]
         db_host         = db_config["host"]
         db_credentials  = "--user=#{db_username} --password=#{db_password} "
-        db_credentials += " --host=#{db_host} " unless db_host.blank?
+        db_credentials += " --host=#{db_host} " unless db_host.nil?
 
         puts "Reading schema.rb on #{domain}..."
         schema_rb = ""
