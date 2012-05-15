@@ -14,11 +14,13 @@ if instance = Capistrano::Configuration.instance
         run "cat #{deploy_to}/current/config/database.yml" do |channel, stream, data|
           db_yml << data
         end
-        db_config      = YAML::load(db_yml)[stage.to_s]
-        db_name        = db_config["database"]
-        db_username    = db_config["username"]
-        db_password    = db_config["password"]
-        db_credentials = "--user=#{db_username} --password=#{db_password} "
+        db_config       = YAML::load(db_yml)[stage.to_s]
+        db_name         = db_config["database"]
+        db_username     = db_config["username"]
+        db_password     = db_config["password"]
+        db_host         = db_config["host"]
+        db_credentials  = "--user=#{db_username} --password=#{db_password} "
+        db_credentials += " --host=#{db_host} " unless db_host.blank?
 
         puts "Reading schema.rb on #{domain}..."
         schema_rb = ""
