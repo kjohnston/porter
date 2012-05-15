@@ -5,7 +5,7 @@ if instance = Capistrano::Configuration.instance
 
     namespace :porter do
 
-      task :db do
+      task :db, :roles => :db do
         set :user, ENV["AS"] || ENV["USER"]
         puts "Connecting to #{domain} as #{user}..."
 
