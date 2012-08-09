@@ -35,6 +35,10 @@ namespace :porter do
 
     puts "Loading schema..."
     Rake::Task["db:schema:load"].execute
+
+    puts "Preparing test database..."
+    Rake::Task["db:test:prepare"].execute
+
     rm "#{root}/porter_schema.rb"
 
     puts "Restoring database from backup..."
