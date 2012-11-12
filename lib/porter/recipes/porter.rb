@@ -1,4 +1,4 @@
-if defined?(Capistrano)
+if defined?(Capistrano::Configuration)
   Capistrano::Configuration.instance.load do
     namespace :porter do
       CONFIG    = YAML::load_file('config/porter_config.yml')
@@ -12,10 +12,10 @@ if defined?(Capistrano)
           db     = src_db['database']
           user   = src_db['username']
           pass   = src_db['password']
-          
+
           domain = CONFIG[stage].nil? ? CONFIG['server']['domain'] : CONFIG[stage]['domain']
           server domain, :porter
-          
+
           run "mysqldump --user=#{user} --password=#{pass} #{db} | gzip > ~/#{db}.sql.gz", :roles => :porter
           system "rake porter:#{stage}:db"
           system "rake porter:#{stage}:assets"
