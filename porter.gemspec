@@ -21,7 +21,6 @@ Gem::Specification.new do |s|
      "LICENSE",
      "README.rdoc",
      "Rakefile",
-     "VERSION",
      "generators/porter/lib/insert_commands.rb",
      "generators/porter/porter_generator.rb",
      "generators/porter/templates/porter.rb",
