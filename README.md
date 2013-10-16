@@ -9,6 +9,10 @@ The Porter Ruby gem is comprised of Capistrano and Rake tasks that make cloning 
 * A Rails app
 * rsync (locally and remotely, if you want to sync assets)
 
+### If you're running Rails 2.3
+
+Add `require "porter"` to your Rakefile.
+
 ## Capistrano Multistage (capistrano-ext)
 
 As of v1.1.0, Porter expects that your Capistrano setup utilizes the Capistrano Multistage Extension (capistrano-ext).  This is a really great way to manage the various "stages" you deploy to and Porter is opinionated in that it requires you to organize your stage-specific settings into the Capistrano Multistage pattern.
@@ -18,7 +22,7 @@ More on the Capistrano Multistage Extension:
 
 ## Installation
 
-* Add gem "porter", "~> 1.2.2" to your Gemfile
+* Add gem "porter", "~> 1.2.4" to your Gemfile
 * Run: bundle install
 * Run: rails g porter
 * Add require "porter/capistrano" to your config/deploy.rb
