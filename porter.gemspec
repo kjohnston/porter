@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Kenny Johnston", "Robert Bousquet"]
   s.email       = ["kjohnston.ca@gmail.com"]
   s.homepage    = "http://github.com/kjohnston/porter"
+  s.license     = "MIT"
   s.summary     = %q{Capistrano and Rake tasks for cloning production and/or staging databases and assets to development.}
   s.description = %q{Capistrano and Rake tasks for cloning production and/or staging databases and assets to development.}
 
